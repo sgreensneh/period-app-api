@@ -42,6 +42,7 @@ public class UserServiceImpl implements UserService {
         Flow flow = Flow.builder()
                 .cycleLength(requestDto.getCycleLength())
                 .lastFlow(requestDto.getFirstFlow())
+                .flowLength(requestDto.getFlowLength())
                 .build();
 
         User user = User.builder()

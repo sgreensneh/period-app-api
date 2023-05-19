@@ -14,7 +14,7 @@ import java.util.List;
 @Builder
 public class FlowOverview {
 
-    private LocalDate flowDate;
+    private List<LocalDate> flowDates;
 
     private List<Ovulation> ovulation;
 
