@@ -37,7 +37,7 @@ public class FlowServiceImpl implements FlowService {
             LocalDate nextDate = currentDate.plusDays(cycleCount);
 
             if (nextDate.isAfter(LocalDate.now())) {
-                FlowOverview flowOverview = getFlowOverview(nextDate);
+                FlowOverview flowOverview = getFlowOverview(nextDate, firstFlow.getFlowLength());
                 flows.add(flowOverview);
                 i++;
             }
@@ -46,7 +46,7 @@ public class FlowServiceImpl implements FlowService {
         return flows;
     }
 
-    private static FlowOverview getFlowOverview(LocalDate nextDate) {
+    private static FlowOverview getFlowOverview(LocalDate nextDate, int flowLength) {
         LocalDate possibleOvulationDate = nextDate.minusDays(14);
 
         List<Ovulation> ovulations = new ArrayList<>();
@@ -68,8 +68,13 @@ public class FlowServiceImpl implements FlowService {
             freePeriod.add(nextDate.plusDays(i));
         }
 
+        List<LocalDate> flowDates = new ArrayList<>();
+        for (int i = 0; i < flowLength; i++) {
+            flowDates.add(nextDate.plusDays(i));
+        }
+
         return FlowOverview.builder()
-                .flowDate(nextDate)
+                .flowDates(flowDates)
                 .fertilePeriods(fertileDates)
                 .safePeriod(freePeriod)
                 .ovulation(ovulations)

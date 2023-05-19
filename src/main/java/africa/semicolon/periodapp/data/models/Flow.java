@@ -24,4 +24,6 @@ public class Flow {
 
     private Integer cycleLength;
 
+    private Integer flowLength;
+
 }
