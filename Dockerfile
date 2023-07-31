@@ -12,3 +12,5 @@ EXPOSE 8891
 
 # Set the command to run your Spring Boot application when the container starts
 CMD ["java", "-jar", "period-app-0.0.1-SNAPSHOT.jar"]
+
+
