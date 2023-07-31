@@ -30,4 +30,4 @@ jobs:
     
     - name: Push Docker image to Docker Hub
       run: |
-        docker push jerrywise97/periodapp:v4.0
+        docker push jerrywise97/periodapp:latest
