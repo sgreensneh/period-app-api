@@ -21,13 +21,13 @@ jobs:
       run: mvn -B package --file pom.xml
       
     - name: Build and tag Docker image 
-       run: |
+      run: |
         docker build -t enumafrica/enum-backend-v2 .
      
     - name: Log in to Docker Hub
-       run: |
+      run: |
         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     
     - name: Push Docker image to Docker Hub
-       run: |
+      run: |
         docker push enumafrica/enum-backend-v2
