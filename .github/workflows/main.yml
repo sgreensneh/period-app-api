@@ -19,6 +19,15 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-
-#    - name: build java application with docker
-#      run: sh "docker build -t jerrywise97/periodapp:v4.0
+      
+    - name: Build and tag Docker image 
+       run: |
+        docker build -t enumafrica/enum-backend-v2 .
+     
+    - name: Log in to Docker Hub
+       run: |
+        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    
+    - name: Push Docker image to Docker Hub
+       run: |
+        docker push enumafrica/enum-backend-v2
