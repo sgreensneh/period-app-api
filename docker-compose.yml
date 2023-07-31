@@ -1,9 +1,52 @@
-version: "3.0"
+
+version: "3.4"
+
 
 services:
-  period-app-api:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+  postgresDB:
+    container_name: postgres_demo
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: default_db
+      PGDATA: /data/postgres
+    volumes:
+      - periodapp_web_db_data:/data/postgres
     ports:
-      - 8891:8891
+      - "5432:5432"
+    networks:
+      - periodapp_web_net
+    restart: on-failure
+   
+  app:
+    build: . 
+    image : jerrywise97/periodapp:latest
+    ports:
+      - "8890:8890"
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: default_db
+      POSTGRES_HOST: postgresDB
+      DATABASE_URL: postgres://postgres:postgres@postgresDB:5432/default_db?sslmode=disable
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresDB:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      PORT: "8890"
+    depends_on:
+      - postgresDB 
+    networks:
+      - periodapp_web_net
+    volumes:
+      - .:/usr/src/app
+    restart: on-failure:3
+
+networks:
+  periodapp_web_net:
+    driver: bridge
+
+volumes:
+    periodapp_web_db_data:
