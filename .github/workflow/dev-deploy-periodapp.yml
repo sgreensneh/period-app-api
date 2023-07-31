@@ -20,3 +20,8 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
+
+   - name: build java application with docker
+     run: sh "docker build -t jerrywise97/periodapp:v4.0
+
+
