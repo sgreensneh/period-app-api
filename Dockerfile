@@ -1,16 +1,25 @@
-# Use a base image with Java pre-installed
-FROM eclipse-temurin:17
+#setting your build image
+FROM maven:3.8.7 as build 
 
-# Set the working directory inside the container
+#creating working directory
 WORKDIR /app
 
-# Copy the packaged Spring Boot application JAR file into the container
-COPY target/period-app-0.0.1-SNAPSHOT.jar /app/period-app-0.0.1-SNAPSHOT.jar
+#copying all the source file into the container  
+COPY . . 
+
+#using maven to build the project and skip test
+RUN mvn package -DskipTest
+
+
+#specify the what you want to use to run a container 
+FROM eclipse-temurin:17
+
+#youre copying the build image into the java container and it been copied into the app.jar
+COPY --from=build app/target/*.jar /app.jar
+
 
 # Expose the port that your Spring Boot application listens on
-EXPOSE 8891
+EXPOSE 8890
 
 # Set the command to run your Spring Boot application when the container starts
-CMD ["java", "-jar", "period-app-0.0.1-SNAPSHOT.jar"]
-
-
+CMD ["java", "-jar", "/app.jar"]
