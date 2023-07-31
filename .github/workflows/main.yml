@@ -24,10 +24,10 @@ jobs:
       run: |
         docker build -t enumafrica/enum-backend-v2 .
      
-    - name: Log in to Docker Hub
-      run: |
-        docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+#     - name: Log in to Docker Hub
+#       run: |
+#         docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     
-    - name: Push Docker image to Docker Hub
-      run: |
-        docker push enumafrica/enum-backend-v2
+#     - name: Push Docker image to Docker Hub
+#       run: |
+#         docker push enumafrica/enum-backend-v2
