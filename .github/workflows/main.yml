@@ -53,8 +53,6 @@ jobs:
         secret_db_password: ${{ secrets.ENV_FILE_CONTENT.SECRET_DB_PASSWORD}}
         secret_security_jwtExpTime: ${{ secrets.ENV_FILE_CONTENT.SECRET_SECURITY_JWTEXPTIME}}
         secret_security_jwtSecretKey: ${{ secrets.ENV_FILE_CONTENT.SECRET_SECURITY_JWTSECRETKEY}}
-        
-        
     - name: Connect to EC2 instance and deploy
       run: |
           ssh-keyscan -H 54.157.140.149 >> ~/.ssh/known_hosts
