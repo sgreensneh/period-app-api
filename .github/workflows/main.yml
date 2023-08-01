@@ -48,11 +48,11 @@ jobs:
           ssh-add ~/.ssh/key-air.pem
 
       env:
-        secret_db_url: ${{ secrets.ENV_FILE_CONTENT.secret_db_url }}
-        secret_db_username: ${{ secrets.ENV_FILE_CONTENT.secret_db_username}}
-        secret_db_password: ${{ secrets.ENV_FILE_CONTENT.secret_db_password}}
-        secret_security_jwtExpTime: ${{ secrets.ENV_FILE_CONTENT.secret_security_jwtExpTime}}
-        secret_security_jwtSecretKey: ${{ secrets.ENV_FILE_CONTENT.secret_security_jwtSecretKey}}
+        secret_db_url: ${{ secrets.ENV_FILE_CONTENT.SECRET_DB_URL}}
+        secret_db_username: ${{ secrets.ENV_FILE_CONTENT.SECRET_DB_USERNAME}}
+        secret_db_password: ${{ secrets.ENV_FILE_CONTENT.SECRET_DB_PASSWORD}}
+        secret_security_jwtExpTime: ${{ secrets.ENV_FILE_CONTENT.SECRET_SECURITY_JWTEXPTIME}}
+        secret_security_jwtSecretKey: ${{ secrets.ENV_FILE_CONTENT.SECRET_SECURITY_JWTSECRETKEY}}
         
         
     - name: Connect to EC2 instance and deploy
