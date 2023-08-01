@@ -6,6 +6,7 @@ on:
 jobs:
   ubuntu-jobs:
    runs-on: ubuntu-latest
+   container: docker
    
    steps:
     - name: Checkout code
