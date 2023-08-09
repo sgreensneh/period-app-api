@@ -18,16 +18,29 @@ pipeline {
 
             }
         }     
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry($DOCKER_REGISTRY_CREDENTIALS_USR:$DOCKER_REGISTRY_CREDENTIALS_PSW) {
-                        def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}", '.')
-                        dockerImage.push()
-                    }
-                }
-            }
+    stage('Docker Build') {
+      steps {
+        // Build Docker image
+        sh 'ls -la'
+        sh 'docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} .'
+      }
+    }
+
+
+    stage('Push to dockerhub') {
+      steps {
+        withCredentials([
+            usernamePassword(credentialsId: 'docker', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')
+        ]) {
+            sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
+            // Build app using docker
+            sh 'docker push ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}'
+            // Logout from Docker Hub
+            sh 'docker logout'
         }
+      }
+    }
+
 
         stage('Deploy to EC2') {
             steps {
