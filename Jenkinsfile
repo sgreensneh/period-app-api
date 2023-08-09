@@ -34,7 +34,7 @@ pipeline {
         ]) {
             sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
             // Build app using docker
-            sh 'docker push ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}'
+            sh 'docker push jerrywise97/periodapp:${BUILD_NUMBER}'
             // Logout from Docker Hub
             sh 'docker logout'
         }
