@@ -1,30 +1,49 @@
 pipeline {
-  agent any
-
-  stages {
-    stage('Build') {
-      steps {
-        sh 'mvn clean package -Dprod'
-      }
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = 'jerrywise97/periodapp'
+        BUILD_NUMBER = "Latest"
+        DOCKER_REGISTRY_CREDENTIALS = credentials('docker')
+        EC2_USER = 'ec2-user'
+        SSH_KEY = credentials('196f3506-9419-495c-83d5-f60c1d8c4771')
+        EC2_HOST = '54.90.24.221'
     }
+    
+    stages {
+        stage('Clone') {
+            steps {
+                git branch: 'main',
+                url: 'https://github.com/jerrywise97/period-app-api.git'
 
-    stage('Build Docker Image') {
-      steps {
-        script {
-          docker.withRegistry('https://hub.docker.com/', 'docker-hub-id') {
-            def dockerImage = docker.build('period-app-api:latest', '.')
-            dockerImage.push()
-          }
+            }
         }
-      }
-    }
-
-    stage('Deploy to EC2') {
-      steps {
-        script {
-          sh 'ssh -i ~/Downloads/raheem-jenkins-one-note-keypair.pem ec2-user@ec2-52-90-67-9.compute-1.amazonaws.com "docker-compose down && docker-compose up -d"'
+        
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_REGISTRY_CREDENTIALS) {
+                        def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}", '.')
+                        dockerImage.push()
+                    }
+                }
+            }
         }
-      }
+
+        stage('Deploy to EC2') {
+            steps {
+                script {
+                    sshagent(credentials: [SSH_KEY]) {
+                        def remoteCommand = "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${EC2_USER}@${EC2_HOST}"
+                        remoteCommand += " docker pull ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
+                        remoteCommand += " docker stop your-app-container || true"
+                        remoteCommand += " docker rm your-app-container || true"
+                        remoteCommand += " docker run -d --name your-app-container -p 8891:8891 ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
+                        
+                        sh remoteCommand
+                    }
+                }
+            }
+        }
     }
-  }
 }
