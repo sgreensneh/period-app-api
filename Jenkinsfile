@@ -22,7 +22,7 @@ pipeline {
       steps {
         // Build Docker image
         sh 'ls -la'
-        sh 'Docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} .'
+        sh 'docker build -t ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER} .'
       }
     }
 
