@@ -18,11 +18,11 @@ pipeline {
 
             }
         }
-        
+ // $DOCKER_REGISTRY_CREDENTIALS_USR:$DOCKER_REGISTRY_CREDENTIALS_PSW       
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('', ${DOCKER_REGISTRY_CREDENTIALS}) {
+                    docker.withRegistry($DOCKER_REGISTRY_CREDENTIALS}) {
                         def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}", '.')
                         dockerImage.push()
                     }
