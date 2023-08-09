@@ -17,12 +17,11 @@ pipeline {
                 url: 'https://github.com/jerrywise97/period-app-api.git'
 
             }
-        }
- // $DOCKER_REGISTRY_CREDENTIALS_USR:$DOCKER_REGISTRY_CREDENTIALS_PSW       
+        }     
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.withRegistry($DOCKER_REGISTRY_CREDENTIALS}) {
+                    docker.withRegistry($DOCKER_REGISTRY_CREDENTIALS_USR:$DOCKER_REGISTRY_CREDENTIALS_PSW) {
                         def dockerImage = docker.build("${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}", '.')
                         dockerImage.push()
                     }
