@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to EC2') {
             steps {
                 script {
-                    sshagent(credentials: [196f3506-9419-495c-83d5-f60c1d8c4771]) {
+                    sshagent(credentials: ['196f3506-9419-495c-83d5-f60c1d8c4771']) {
                         def remoteCommand = "ssh -o StrictHostKeyChecking=no -i ${SSH_KEY} ${EC2_USER}@${EC2_HOST}"
                         remoteCommand += " docker pull ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
                         remoteCommand += " docker stop your-app-container || true"
