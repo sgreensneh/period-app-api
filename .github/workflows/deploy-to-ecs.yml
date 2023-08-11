@@ -48,7 +48,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:Latest .
  
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:Latest 
-        docker push $ECR_REGISTRY/$ECR_REPOSITORYS:Latest 
+      
         
 #      // - name: Download environment variables from S3
 #      //   run: |
