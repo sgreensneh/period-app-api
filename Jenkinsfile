@@ -2,19 +2,19 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = 'jerrywise97/periodapp'
+        DOCKER_IMAGE = 'sgreensneh/period-app'
         BUILD_NUMBER = "latest"
         DOCKER_REGISTRY_CREDENTIALS = credentials('docker')
         EC2_USER = 'ec2-user'
         SSH_KEY = credentials('196f3506-9419-495c-83d5-f60c1d8c4771')
-        EC2_HOST = '54.90.24.221'
+        EC2_HOST = '54.183.234.79'
     }
     
     stages {
         stage('Clone') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/jerrywise97/period-app-api.git'
+                url: 'https://github.com/sgreensneh/period-app-api.git'
 
             }
         }     
@@ -22,7 +22,7 @@ pipeline {
       steps {
         // Build Docker image
         sh 'ls -la'
-        sh 'docker build -t jerrywise97/periodapp:${BUILD_NUMBER} .'
+        sh 'docker build -t sgreensneh/period-app:${BUILD_NUMBER} .'
       }
     }
 
@@ -34,7 +34,7 @@ pipeline {
         ]) {
             sh 'docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}'
             // Build app using docker
-            sh 'docker push jerrywise97/periodapp:${BUILD_NUMBER}'
+            sh 'docker push sgreensneh/period-app:${BUILD_NUMBER}'
             // Logout from Docker Hub
             sh 'docker logout'
         }
@@ -50,7 +50,7 @@ pipeline {
                         remoteCommand += " docker pull ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
                         remoteCommand += " docker stop your-app-container || true"
                         remoteCommand += " docker rm your-app-container || true"
-                        remoteCommand += " docker run -d --name your-app-container -p 8891:8891 ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
+                        remoteCommand += " docker run -d --name period-app-api -p 8891:8891 ${DOCKER_IMAGE_NAME}:${BUILD_NUMBER}"
                         
                         sh remoteCommand
                     }    
